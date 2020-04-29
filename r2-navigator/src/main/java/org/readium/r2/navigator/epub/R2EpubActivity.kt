@@ -163,6 +163,9 @@ open class R2EpubActivity : AppCompatActivity(), IR2Activity, IR2Selectable, IR2
     }
 
     override fun goBackward(animated: Boolean, completion: () -> Unit): Boolean {
+        return goBackward(animated,false,completion)
+    }
+    protected fun goBackward(animated: Boolean,backToFirstPage:Boolean, completion: () -> Unit): Boolean {
         launch {
             pagerPosition = 0
             if (resourcePager.currentItem > 0) {
@@ -171,7 +174,7 @@ open class R2EpubActivity : AppCompatActivity(), IR2Activity, IR2Selectable, IR2
 
                 val currentFragment = ((resourcePager.adapter as R2PagerAdapter).mFragments.get((resourcePager.adapter as R2PagerAdapter).getItemId(resourcePager.currentItem))) as? R2EpubPageFragment
 
-                if (layoutDirectionIsRTL() || publication.metadata.direction == PageProgressionDirection.rtl.name) {
+                if (backToFirstPage || layoutDirectionIsRTL() || publication.metadata.direction == PageProgressionDirection.rtl.name) {
                     // The view has RTL layout
                     currentFragment?.webView?.let {
                         currentFragment.webView.progression = 0.0
@@ -267,7 +270,15 @@ open class R2EpubActivity : AppCompatActivity(), IR2Activity, IR2Selectable, IR2
                     getAbsolute(spineItem.href!!, publicationPath)
                 }
             } else {
-                "$BASE_URL:$port" + "/" + publicationFileName + spineItem.href
+                var url:String? = null
+                for(e in NavigatorExtension.allExtension){
+                    val u = e.urlForEpub(publicationFileName , spineItem.href)
+                    if(u!=null){
+                        url = u
+                        break
+                    }
+                }
+                url ?: "$BASE_URL:$port" + "/" + publicationFileName + spineItem.href
             }
             resourcesSingle.add(Pair(resourceIndexSingle, uri))
 
@@ -378,7 +389,7 @@ open class R2EpubActivity : AppCompatActivity(), IR2Activity, IR2Selectable, IR2
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
+            if (data != null && data.hasExtra("locator")) {
 
                 pagerPosition = 0
 
@@ -593,14 +604,16 @@ open class R2EpubActivity : AppCompatActivity(), IR2Activity, IR2Selectable, IR2
             }
         }
     }
-
+    open var noteColor:Int? = null
+    open fun highlightColors(res:MutableMap<Int,Int>){
+    }
     fun createAnnotation(highlight: Highlight?, callback: (Highlight) -> Unit) {
         if (highlight != null) {
             val currentFragment = ((resourcePager.adapter as R2PagerAdapter).mFragments.get((resourcePager.adapter as R2PagerAdapter).getItemId(resourcePager.currentItem))) as? R2EpubPageFragment
             currentFragment?.webView?.createAnnotation(highlight.id)
             callback(highlight)
         } else {
-            createHighlight(Color.rgb(150, 150, 150)) {
+            createHighlight(noteColor?:Color.rgb(150, 150, 150)) {
                 createAnnotation(it) { highlight ->
                     callback(highlight)
                 }
@@ -609,8 +622,8 @@ open class R2EpubActivity : AppCompatActivity(), IR2Activity, IR2Selectable, IR2
 
     }
 
-    override fun onPageLoaded() {
-        super.onPageLoaded()
+    override fun onPageLoaded(webView: R2BasicWebView) {
+        super.onPageLoaded(webView)
     }
 
 }

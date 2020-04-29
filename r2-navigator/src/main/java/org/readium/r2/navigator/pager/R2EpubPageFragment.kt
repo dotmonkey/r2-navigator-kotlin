@@ -87,6 +87,9 @@ class R2EpubPageFragment : Fragment() {
         webView.resourceUrl = resourceUrl
         webView.setPadding(0, 0, 0, 0)
         webView.addJavascriptInterface(webView, "Android")
+        for(e in NavigatorExtension.allExtension){
+            e.addJavascriptInterface(webView)
+        }
 
         var endReached = false
         webView.setOnOverScrolledCallback(object : R2BasicWebView.OnOverScrolledCallback {
@@ -151,7 +154,7 @@ class R2EpubPageFragment : Fragment() {
                     // TODO this seems to be needed, will need to test more
                     if (url!!.indexOf("#") > 0) {
                         val id = url.substring(url.indexOf('#'))
-                        webView.loadUrl("javascript:scrollAnchor($id);")
+                        webView.loadUrl("javascript:scrollAnchor('$id');")
                         locations = Locations(fragment = id)
                     }
 
@@ -176,7 +179,7 @@ class R2EpubPageFragment : Fragment() {
                     }
 
                 }
-                webView.listener.onPageLoaded()
+                webView.listener.onPageLoaded(webView)
 
             }
 
@@ -186,6 +189,12 @@ class R2EpubPageFragment : Fragment() {
                     try {
                         return WebResourceResponse("image/png", null, null)
                     } catch (e: Exception) {
+                    }
+                }
+                for(e in NavigatorExtension.allExtension){
+                    val ret = e.shouldInterceptRequest(view,request)
+                    if(ret!=null){
+                        return ret
                     }
                 }
                 return null

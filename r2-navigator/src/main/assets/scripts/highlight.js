@@ -89,6 +89,16 @@ function setHighlightAreaStyle(win, highlightAreas, highlight) {
     }
 }
 
+function styleHighlightAreaExt(highlightArea,highlight){
+    for(var i=0;i<extensions.length;i++){
+        var clr = `rgb(${highlight.color.red}, ${highlight.color.green}, ${highlight.color.blue})`;
+        var f = extensions[i].styleHighlightArea;
+        if(f){
+            f(highlightArea,clr);
+        }
+    }
+}
+
 function resetHighlightAreaStyle(win, highlightArea) {
     const useSVG = !DEBUG_VISUALS && USE_SVG;
     //const useSVG = USE_SVG;
@@ -111,6 +121,7 @@ function resetHighlightAreaStyle(win, highlightArea) {
             else {
                 highlightArea.style.setProperty("background-color", `rgba(${highlight.color.red}, ${highlight.color.green}, ${highlight.color.blue}, ${opacity})`, "important");
             }
+            styleHighlightAreaExt(highlightArea,highlight);
         }
     }
 }
@@ -1472,6 +1483,7 @@ function createHighlightDom(win, highlight, annotationFlag) {
             highlightArea.style.left = `${highlightArea.rect.left * scale}px`;
             highlightArea.style.top = `${highlightArea.rect.top * scale}px`;
             highlightParent.append(highlightArea);
+            styleHighlightAreaExt(highlightArea,highlight);
             if (!DEBUG_VISUALS && drawStrikeThrough) {
                 //if (drawStrikeThrough) {
                 const highlightAreaLine = document.createElement("div");
