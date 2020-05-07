@@ -383,7 +383,7 @@ open class R2EpubActivity : AppCompatActivity(), IR2Activity, IR2Selectable, IR2
     }
 
     override fun onActionModeStarted(mode: ActionMode?) {
-        mode?.menu?.clear()
+        //mode?.menu?.clear()
         super.onActionModeStarted(mode)
     }
 
