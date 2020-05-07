@@ -80,6 +80,7 @@ open class R2BasicWebView(context: Context, attrs: AttributeSet) : WebView(conte
                         or View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
                         or View.SYSTEM_UI_FLAG_IMMERSIVE)
             }
+            listener.hideActionBar()
             val scrollMode = listener.preferences.getBoolean(SCROLL_REF, false)
             if (scrollMode) {
                 if (listener.publication.metadata.direction == "rtl") {
@@ -111,6 +112,7 @@ open class R2BasicWebView(context: Context, attrs: AttributeSet) : WebView(conte
                         or View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
                         or View.SYSTEM_UI_FLAG_IMMERSIVE)
             }
+            listener.hideActionBar()
             val scrollMode = listener.preferences.getBoolean(SCROLL_REF, false)
             if (scrollMode) {
                 if (listener.publication.metadata.direction == "rtl") {

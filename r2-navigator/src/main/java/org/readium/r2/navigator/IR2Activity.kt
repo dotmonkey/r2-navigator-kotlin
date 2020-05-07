@@ -29,7 +29,7 @@ interface IR2Activity {
         get() = null
     val allowToggleActionBar: Boolean
         get() = true
-
+    fun hideActionBar() {}
     fun toggleActionBar() {}
     fun toggleActionBar(v: View? = null) {}
     fun nextResource(v: View? = null) {}
