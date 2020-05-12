@@ -38,7 +38,8 @@ const CLASS_ANNOTATION_BOUNDING_AREA = "R2_CLASS_ANNOTATION_BOUNDING_AREA";
 // tslint:disable-next-line:max-line-length
 const _blacklistIdClassForCFI = [POPUP_DIALOG_CLASS, TTS_CLASS_INJECTED_SPAN, TTS_CLASS_INJECTED_SUBSPAN, ID_HIGHLIGHTS_CONTAINER, CLASS_HIGHLIGHT_CONTAINER, CLASS_HIGHLIGHT_AREA, CLASS_HIGHLIGHT_BOUNDING_AREA, "resize-sensor"];
 const CLASS_PAGINATED = "r2-css-paginated";
-
+const annotationPrefix = "ED_ANNOTATION_"
+const highlightPrefix = "ED_HIGHLIGHT_"
 //const IS_DEV = (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
 const IS_DEV = false;
 const _highlights = [];
@@ -237,14 +238,14 @@ function processTouchEvent(win, ev) {
             if (typeof window !== 'undefined' && typeof window.process === 'object' && window.process.type === 'renderer') {
                 electron_1.ipcRenderer.sendToHost(R2_EVENT_HIGHLIGHT_CLICK, payload);
             } else if (window.webkitURL) {
-                console.log(foundHighlight.id.includes("R2_ANNOTATION_"))
-                if ( foundHighlight.id.search("R2_ANNOTATION_") >= 0 ) {
+                console.log(foundHighlight.id.includes(annotationPrefix))
+                if ( foundHighlight.id.search(annotationPrefix) >= 0 ) {
                     if (navigator.userAgent.match(/Android/i)) {
                         Android.highlightAnnotationMarkActivated(foundHighlight.id);
                     } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
                         webkit.messageHandlers.highlightAnnotationMarkActivated.postMessage(foundHighlight.id);
                     }
-                } else if ( foundHighlight.id.search("R2_HIGHLIGHT_") >= 0 ) {
+                } else if ( foundHighlight.id.search(highlightPrefix) >= 0 ) {
                     if (navigator.userAgent.match(/Android/i)) {
                         Android.highlightActivated(foundHighlight.id);
                     } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
@@ -367,13 +368,13 @@ function processMouseEvent(win, ev) {
 			if (typeof window !== 'undefined' && typeof window.process === 'object' && window.process.type === 'renderer') {
                 electron_1.ipcRenderer.sendToHost(R2_EVENT_HIGHLIGHT_CLICK, payload);
             } else if (window.webkitURL) {
-                if ( foundHighlight.id.search("R2_ANNOTATION_") >= 0 ) {
+                if ( foundHighlight.id.search(annotationPrefix) >= 0 ) {
                     if (navigator.userAgent.match(/Android/i)) {
                         Android.highlightAnnotationMarkActivated(foundHighlight.id);
                     } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
                         webkit.messageHandlers.highlightAnnotationMarkActivated.postMessage(foundHighlight.id);
                     }
-                } else if ( foundHighlight.id.search("R2_HIGHLIGHT_") >= 0 ) {
+                } else if ( foundHighlight.id.search(highlightPrefix) >= 0 ) {
                      if (navigator.userAgent.match(/Android/i)) {
                          Android.highlightActivated(foundHighlight.id);
                      } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
@@ -1205,9 +1206,9 @@ function _createHighlight(locations, color, pointerInteraction, type) {
 
     var id;
     if ( type == ID_HIGHLIGHTS_CONTAINER ) {
-        id = "R2_HIGHLIGHT_" + sha256Hex;
+        id = highlightPrefix + sha256Hex;
     } else {
-        id = "R2_ANNOTATION_" + sha256Hex;
+        id = annotationPrefix + sha256Hex;
     }
 
     destroyHighlight(id);

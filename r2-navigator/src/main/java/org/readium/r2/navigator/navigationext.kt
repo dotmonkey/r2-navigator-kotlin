@@ -6,6 +6,7 @@ import android.view.ActionMode
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
+import org.readium.r2.navigator.epub.Highlight
 import org.readium.r2.streamer.fetcher.Fetcher
 
 open class NavigatorExtension{
@@ -59,6 +60,10 @@ open class NavigatorExtension{
 }
 
 interface NavigatorInterface{
-    fun addHighlight(highlight: org.readium.r2.navigator.epub.Highlight)
-    fun addAnnotation(highlight: org.readium.r2.navigator.epub.Highlight, annotation: String)
+    fun addHighlight(highlight: Highlight)
+    fun removeHighlight(highlight: Highlight)
+    fun addAnnotation(highlight: Highlight, annotation: String)
+    fun getAnnotation(highlight: Highlight):String?
+    fun getHighlight(id:String):Highlight?
+    fun getHighlight(bookId:Int,href:String):List<Highlight>
 }
