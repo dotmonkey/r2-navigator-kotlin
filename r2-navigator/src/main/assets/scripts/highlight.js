@@ -681,6 +681,12 @@ function mergeTouchingRects(rects, tolerance, doNotMergeHorizontallyAlignedRects
 }
 
 function getClientRectsNoOverlap(range, doNotMergeHorizontallyAlignedRects) {
+    for(var i=0;i<extensions.length;i++){
+        var f = extensions[i].getClientRects;
+        if(f){
+            return f(range, doNotMergeHorizontallyAlignedRects);
+        }
+    }
     const rangeClientRects = range.getClientRects();
     return getClientRectsNoOverlap_(rangeClientRects, doNotMergeHorizontallyAlignedRects);
 }
