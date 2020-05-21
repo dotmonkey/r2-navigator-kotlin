@@ -553,8 +553,8 @@ open class R2EpubActivity : AppCompatActivity(), IR2Activity, IR2Selectable, IR2
                     val display = windowManager.defaultDisplay
                     val metrics = DisplayMetrics()
                     display.getMetrics(metrics)
-                    val left = getDouble("left")
-                    val width = getDouble("width")
+                    val left = getDouble("left") * metrics.density
+                    val width = getDouble("width") * metrics.density
                     val top = getDouble("top") * metrics.density
                     val height = getDouble("height") * metrics.density
                     Rect(left.toInt(), top.toInt(), width.toInt() + left.toInt(), top.toInt() + height.toInt())

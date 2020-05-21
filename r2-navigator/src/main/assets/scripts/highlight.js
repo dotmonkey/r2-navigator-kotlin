@@ -1915,13 +1915,14 @@ function rectangleForHighlightWithID(id) {
     const doNotMergeHorizontallyAlignedRects = drawUnderline || drawStrikeThrough;
     //const clientRects = DEBUG_VISUALS ? range.getClientRects() :
     const clientRects = getClientRectsNoOverlap(range, doNotMergeHorizontallyAlignedRects);
+    var bound = range.getBoundingClientRect();
     var size = {
     screenWidth: window.outerWidth,
     screenHeight: window.outerHeight,
-    left: clientRects[0].left,
-    width: clientRects[0].width,
-    top: clientRects[0].top,
-    height: clientRects[0].height
+    left: bound.left,
+    width: bound.width,
+    top: bound.top,
+    height: bound.height
     }
 
     return size;
