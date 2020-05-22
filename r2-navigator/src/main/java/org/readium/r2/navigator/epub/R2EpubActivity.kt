@@ -497,6 +497,10 @@ open class R2EpubActivity : AppCompatActivity(), IR2Activity, IR2Selectable, IR2
         val currentFragment = ((resourcePager.adapter as R2PagerAdapter).mFragments.get((resourcePager.adapter as R2PagerAdapter).getItemId(resourcePager.currentItem))) as? R2EpubPageFragment
 
         currentFragment?.webView?.getCurrentSelectionInfo {
+            if(it=="null"){
+                callback(null)
+                return@getCurrentSelectionInfo
+            }
             val selection = JSONObject(it)
             val resource = publication.readingOrder[resourcePager.currentItem]
             val resourceHref = resource.href ?: ""
