@@ -22,7 +22,7 @@
   --RS__baseFontSize: 87.5%;
 
   --RS__flowSpacing: 1.5rem;
-  --RS__paraSpacing: 0;
+  --RS__paraSpacing: 0.65em;
   --RS__paraIndent: 1em;
 
   --RS__linkColor: #0000EE;
