@@ -1256,6 +1256,24 @@ function createAnnotation(id) {
     return _createHighlight(locations, highlight.color, true, ID_ANNOTATION_CONTAINER)
 }
 
+function clearNoteForAnnotation(id) {
+    let i = -1;
+
+    const highlight = _highlights.find((h, j) => {
+                                       i = j;
+                                       return h.id === id;
+                                       });
+    if ( highlight == undefined )
+        return
+
+    var locations = {
+        locations: rangeInfo2Location(highlight.rangeInfo)
+    }
+
+    var idOld = id.replace(highlightPrefix, annotationPrefix)
+    destroyHighlight(idOld)
+    return _createHighlight(locations, highlight.color, true, ID_HIGHLIGHTS_CONTAINER)
+}
 
 function createHighlightDom(win, highlight, annotationFlag) {
 
