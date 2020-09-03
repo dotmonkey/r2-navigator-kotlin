@@ -158,7 +158,7 @@ class R2EpubPageFragment : Fragment() {
                         locations = Locations(fragment = id)
                     }
 
-                    if (locations?.fragment == null) {
+                    if (locations?.fragment == null && (locations?.partialCfi==null) ) {
                         locations?.progression?.let { progression ->
                             currentFragment.webView.progression = progression
 

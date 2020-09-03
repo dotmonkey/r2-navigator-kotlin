@@ -15,6 +15,21 @@ window.addEventListener("load", function() { // on page load
     // When device orientation changes, screen X and Y sizes are recalculated.
 }, false);
 
+function processHighlightClick(ev){
+    var win = window;
+    var tmp = findHighlight(win,ev);
+    var foundHighlight = tmp[0];
+    var foundElement = tmp[1];
+    if(!foundHighlight) return false;
+    if ( foundHighlight.id.search(annotationPrefix) >= 0 ) {
+        Android.highlightAnnotationMarkActivated(foundHighlight.id);
+    } else if ( foundHighlight.id.search(highlightPrefix) >= 0 ) {
+        Android.highlightActivated(foundHighlight.id);
+    }else{
+        return false;
+    }
+    return true;
+}
 
 var handleClick = function(event) {
     for(var i=0;i<extensions.length;i++){

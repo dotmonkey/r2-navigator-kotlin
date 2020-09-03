@@ -126,14 +126,14 @@ function resetHighlightAreaStyle(win, highlightArea) {
         }
     }
 }
-function processTouchEvent(win, ev) {
-    
+
+function findHighlight(win, ev) {
     const document = win.document;
     const scrollElement = getScrollingElement(document);
     const x = ev.changedTouches[0].clientX;
     const y = ev.changedTouches[0].clientY;
     if (!_highlightsContainer) {
-        return;
+        return [];
     }
     const paginated = isPaginated(document);
     const bodyRect = document.body.getBoundingClientRect();
@@ -185,6 +185,13 @@ function processTouchEvent(win, ev) {
             break;
         }
     }
+    return [foundHighlight,foundElement];
+}
+
+function processTouchEvent(win, ev) {
+    var tmp = findHighlight(win,ev);
+    var foundHighlight = tmp[0];
+    var foundElement = tmp[1];
     if (!foundHighlight || !foundElement) {
         const highlightBoundings = _highlightsContainer.querySelectorAll(`.${CLASS_HIGHLIGHT_BOUNDING_AREA}`);
         for (const highlightBounding of highlightBoundings) {
@@ -752,7 +759,7 @@ function ensureContainer(win, annotationFlag) {
     const document = win.document;
 
     if (!_highlightsContainer) {
-        if (!bodyEventListenersSet) {
+        if (false && !bodyEventListenersSet) {
             bodyEventListenersSet = true;
             document.body.addEventListener("mousedown", (ev) => {
                                            lastMouseDownX = ev.clientX;

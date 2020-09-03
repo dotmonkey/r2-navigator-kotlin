@@ -409,7 +409,7 @@ class R2WebView(context: Context, attrs: AttributeSet) : R2BasicWebView(context,
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-
+return
         // Make sure scroll position is set correctly.
         if (w != oldw) {
             recomputeScrollPosition(w, oldw, mPageMargin, mPageMargin)
@@ -442,6 +442,7 @@ class R2WebView(context: Context, attrs: AttributeSet) : R2BasicWebView(context,
         }
     }
 
+    open var locateByJS = false
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         val count = childCount
         val width = r - l
@@ -504,7 +505,7 @@ class R2WebView(context: Context, attrs: AttributeSet) : R2BasicWebView(context,
         mBottomPageBounds = height - paddingBottom
         mDecorChildCount = decorCount
 
-        if (mFirstLayout) {
+        if (mFirstLayout && !locateByJS) {
             scrollToItem(mCurItem, false, 0, false)
         }
         mFirstLayout = false
