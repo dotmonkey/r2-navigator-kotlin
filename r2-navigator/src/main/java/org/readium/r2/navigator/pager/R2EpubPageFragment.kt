@@ -235,9 +235,23 @@ class R2EpubPageFragment : Fragment() {
         }
 
 
-        val locations = webView.navigator.currentLocation?.locations
-
+        val cur = webView.navigator.currentLocation
+        val locations = cur?.locations
+        //println("loc:${ webView.navigator.currentLocation?.toJSON()}")
+        var anchor = ""
         locations?.fragment?.let {
+            anchor = it
+            if (!anchor.startsWith("#")) {
+                anchor = "#$anchor"
+            }
+        }
+        if(cur?.href?.contains("#")==true){
+            anchor="#"+cur.href!!.substringAfter('#');
+        }
+        webView.loadUrl(resourceUrl + anchor)
+        /*
+        locations?.fragment?.let {
+
             var anchor = it
             if (!anchor.startsWith("#")) {
                 anchor = "#$anchor"
@@ -247,7 +261,7 @@ class R2EpubPageFragment : Fragment() {
         } ?: run {
             webView.loadUrl(resourceUrl)
         }
-
+*/
 
         return v
     }

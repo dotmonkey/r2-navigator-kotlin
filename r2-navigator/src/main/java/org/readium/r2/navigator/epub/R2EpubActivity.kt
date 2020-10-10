@@ -17,6 +17,7 @@ import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.ActionMode
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -78,6 +79,9 @@ open class R2EpubActivity : AppCompatActivity(), IR2Activity, IR2Selectable, IR2
                                 currentFragent?.webView?.loadUrl(resource.second)
                             }
                         } else {
+                            if(locator.href!!.contains('#')){
+                                currentLocation?.href = locator.href
+                            }
                             resourcePager.currentItem = resource.first
                         }
                         break
@@ -595,6 +599,10 @@ open class R2EpubActivity : AppCompatActivity(), IR2Activity, IR2Selectable, IR2
             }
 
             currentFragment?.webView?.createHighlight(locator?.toJSON().toString(), colorJson.toString()) {
+                if(it=="null"){
+                    Log.d("createHighlight","js return null")
+                    return@createHighlight
+                }
                 val json = JSONObject(it)
                 val id = json.getString("id")
                 callback(
