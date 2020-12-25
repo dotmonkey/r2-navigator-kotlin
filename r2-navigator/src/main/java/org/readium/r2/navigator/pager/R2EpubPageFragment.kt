@@ -158,7 +158,7 @@ class R2EpubPageFragment : Fragment() {
                         webView.loadUrl("javascript:scrollAnchor('$id');")
                         locations = Locations(fragment = id)
                     }
-
+/*
                     if (locations?.fragment == null && (locations?.partialCfi==null) ) {
                         locations?.progression?.let { progression ->
                             currentFragment.webView.progression = progression
@@ -178,9 +178,9 @@ class R2EpubPageFragment : Fragment() {
                             }
                         }
                     }
-
+*/
                 }
-                webView.listener.onPageLoaded(webView)
+                webView.listener.onPageLoaded(view as R2BasicWebView)
 
             }
 
